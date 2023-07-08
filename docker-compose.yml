@@ -3,6 +3,7 @@ services:
   headless-shell:
     image: chromedp/headless-shell:latest
     restart: always
+    command: ["--ignore-certificate-errors"]
     ports:
       - 9222:9222
   chat.openai.com:
