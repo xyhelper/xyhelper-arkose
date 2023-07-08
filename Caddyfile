@@ -22,5 +22,16 @@
         # php_fastcgi localhost:9000
 }
 
+
+
+chat.openai.com:443 {
+        # Set this path to your site's directory.
+        root * /srv
+
+        # Enable the static file server.
+        file_server
+
+        tls internal
+}
 # Refer to the Caddy docs for more information:
 # https://caddyserver.com/docs/caddyfile

@@ -44,9 +44,9 @@ func AutoClick() (payload, token string) {
 		if msg, ok := ev.(*network.EventRequestWillBeSent); ok {
 			// g.Log().Info(ctx, msg)
 			if msg.Type == "XHR" && msg.Request.Method == "POST" {
-				if msg.Request.URL == "https://client-api.arkoselabs.com/fc/gt2/public_key/35536E1E-65B4-4D96-9D97-6ADB7EFF8147" {
+				if msg.Request.URL == "https://tcr9i.chat.openai.com/fc/gt2/public_key/35536E1E-65B4-4D96-9D97-6ADB7EFF8147" {
 					payload = msg.Request.PostData
-					// g.Log().Info(ctx, msg.Request.URL, msg.Request.PostData)
+					// g.Log().Info(ctx, msg.Request.URL, msg.Request.PostData, msg.Request.Headers)
 					// postMap, err := convertToMap(msg.Request.PostData)
 					// if err != nil {
 					// 	g.Log().Error(ctx, err)
@@ -66,7 +66,8 @@ func AutoClick() (payload, token string) {
 	// chromedp.ProxyServer("http://127.0.0.1:7006")
 	chromedp.Run(ctx, network.Enable(), chromedp.ActionFunc(func(ctx context.Context) error {
 		// 打开 http://localhost:8199
-		chromedp.Navigate(`http://chat.openai.com/enforcement.html`).Do(ctx)
+		chromedp.Navigate(`https://chat.openai.com/chat.html`).Do(ctx)
+
 		// 等待 <button id="enforcement-trigger">...</button> 出现
 		g.Log().Info(ctx, "等待 <button id=\"enforcement-trigger\">...</button> 出现")
 		chromedp.WaitVisible(`#enforcement-trigger`, chromedp.ByID).Do(ctx)
@@ -108,7 +109,7 @@ func convertToMap(data string) (*gmap.StrStrMap, error) {
 			// Handle error if necessary
 			return nil, err
 		}
-		g.Log().Info(context.Background(), "key-value", key, value)
+		// g.Log().Info(context.Background(), "key-value", key, value)
 		m.Set(key, value)
 	}
 
