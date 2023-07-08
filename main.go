@@ -19,6 +19,10 @@ func main() {
 	ctx := gctx.New()
 	s := g.Server()
 	_, err := gcron.AddSingleton(ctx, "* * * * * *", func(ctx context.Context) {
+		// 开发模式跳过
+		if g.Cfg().MustGetWithEnv(ctx, "MODE").String() == "dev" {
+			return
+		}
 		if config.PayloadQueue.Size() >= gconv.Int64(config.PayloadQueueSize) {
 			g.Log().Info(ctx, "PayloadQueue is full,will pop one ", config.PayloadQueue.Size(), config.PayloadQueueSize)
 			config.PayloadQueue.Pop()
