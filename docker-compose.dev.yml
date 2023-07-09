@@ -9,16 +9,12 @@ services:
   chat.openai.com:
     image: caddy:latest
     restart: always
+    ports:
+      - 8290:80
+      - 8443:443
     volumes:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
       - $PWD/site:/srv
-  xyhelper-arkose:
-    image: xyhelper/xyhelper-arkose:latest
-    restart: always
-    network_mode: "host"
-    environment:
-      - PORT=8199
-      - BROWSERURL=http://127.0.0.1:9222
-      - PAYLOAD_EXPIRE=10800
-      - TOKEN_EXPIRE=1200
-      - INTERVAL=0
+  busybox:
+    image: busybox
+    command: tail -f /dev/null

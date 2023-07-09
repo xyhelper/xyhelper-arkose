@@ -24,23 +24,22 @@ func main() {
 		if g.Cfg().MustGetWithEnv(ctx, "MODE").String() == "dev" {
 			return
 		}
-		if config.PayloadQueue.Size() >= gconv.Int64(config.PayloadQueueSize) {
-			g.Log().Info(ctx, "PayloadQueue is full,will pop one ", config.PayloadQueue.Size(), config.PayloadQueueSize)
-			config.PayloadQueue.Pop()
-		}
-		if config.TokenQueue.Size() >= gconv.Int64(config.TokenQueueSize) {
-			g.Log().Info(ctx, "TokenQueue is full,will pop one ", config.TokenQueue.Size(), config.TokenQueueSize)
-			config.TokenQueue.Pop()
-		}
-
 		g.Log().Print(ctx, "Every second", config.PayloadQueue.Size(), config.TokenQueue.Size())
-		playload, token := autoclick.AutoClick()
+		plaload, token := autoclick.AutoClick()
 		if !strings.Contains(token, "sup=1|rid=") {
 			g.Log().Error(ctx, "token error", token)
 			return
 		}
-		config.PayloadQueue.Push(playload)
-		config.TokenQueue.Push(token)
+		Payload := config.Payload{
+			Payload: plaload,
+			Created: time.Now().Unix(),
+		}
+		Token := config.Token{
+			Token:   token,
+			Created: time.Now().Unix(),
+		}
+		config.PayloadQueue.Push(Payload)
+		config.TokenQueue.Push(Token)
 		// 生成延时
 		time.Sleep(time.Duration(config.INTERVAL(ctx)) * time.Second)
 
@@ -60,26 +59,48 @@ func main() {
 	s.BindHandler("/payload", func(r *ghttp.Request) {
 		var payload interface{}
 		if config.PayloadQueue.Size() == 0 {
-			payload, _ = autoclick.AutoClick()
+			payloadStr, _ := autoclick.AutoClick()
+			payload = config.Payload{
+				Payload: payloadStr,
+				Created: time.Now().Unix(),
+			}
 		} else {
-			payload = config.PayloadQueue.Pop()
+			for config.PayloadQueue.Size() > 0 {
+				payload = config.PayloadQueue.Pop()
+				var payloadStuct config.Payload
+				gconv.Struct(payload, &payloadStuct)
+				if time.Now().Unix()-payloadStuct.Created < int64(config.PayloadExpire) {
+					break
+				} else {
+					g.Log().Info(r.Context(), "payload is expired,will pop one ", config.PayloadQueue.Size(), payloadStuct.Created, config.PayloadExpire)
+				}
+			}
 		}
 
-		r.Response.WriteJson(g.Map{
-			"payload": payload,
-		})
+		r.Response.WriteJson(payload)
 	})
 	s.BindHandler("/token", func(r *ghttp.Request) {
 		var token interface{}
 		if config.TokenQueue.Size() == 0 {
-			_, token = autoclick.AutoClick()
+			_, tokenStr := autoclick.AutoClick()
+			token = config.Token{
+				Token:   tokenStr,
+				Created: time.Now().Unix(),
+			}
 		} else {
-			token = config.TokenQueue.Pop()
+			for config.TokenQueue.Size() > 0 {
+				token = config.TokenQueue.Pop()
+				var tokenStuct config.Token
+				gconv.Struct(token, &tokenStuct)
+				if time.Now().Unix()-tokenStuct.Created < int64(config.TokenExpire) {
+					break
+				} else {
+					g.Log().Info(r.Context(), "token is expired,will pop one ", config.TokenQueue.Size(), tokenStuct.Created, config.TokenExpire)
+				}
+			}
 		}
 
-		r.Response.WriteJson(g.Map{
-			"token": token,
-		})
+		r.Response.WriteJson(token)
 	})
 	s.Run()
 }
