@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/gogf/gf/v2/container/gqueue"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gctx"
 )
 
 var (
@@ -10,6 +11,7 @@ var (
 	TokenQueueSize   = 180
 	PayloadQueue     = gqueue.New(PayloadQueueSize)
 	TokenQueue       = gqueue.New(TokenQueueSize)
+	Port             = 8199
 )
 
 func BROWSERURL(ctx g.Ctx) string {
@@ -24,4 +26,12 @@ func INTERVAL(ctx g.Ctx) int {
 	g.Log().Infof(ctx, "INTERVAL: %d", INTERVAL)
 
 	return INTERVAL
+}
+
+func init() {
+	ctx := gctx.GetInitCtx()
+	port := g.Cfg().MustGetWithEnv(ctx, "PORT").Int()
+	if port != 0 {
+		Port = port
+	}
 }

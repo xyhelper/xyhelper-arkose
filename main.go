@@ -48,7 +48,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	s.SetPort(8199)
+	s.SetPort(config.Port)
 	s.SetServerRoot("resource/public")
 	s.BindHandler("/arkose", func(r *ghttp.Request) {
 		payload, token := autoclick.AutoClick()
