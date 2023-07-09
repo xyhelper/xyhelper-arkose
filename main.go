@@ -55,19 +55,25 @@ func main() {
 		})
 	})
 	s.BindHandler("/payload", func(r *ghttp.Request) {
-		payload := config.PayloadQueue.Pop()
-		if payload == nil {
+		var payload interface{}
+		if config.PayloadQueue.Size() == 0 {
 			payload, _ = autoclick.AutoClick()
+		} else {
+			payload = config.PayloadQueue.Pop()
 		}
+
 		r.Response.WriteJson(g.Map{
 			"payload": payload,
 		})
 	})
 	s.BindHandler("/token", func(r *ghttp.Request) {
-		token := config.TokenQueue.Pop()
-		if token == nil {
+		var token interface{}
+		if config.TokenQueue.Size() == 0 {
 			_, token = autoclick.AutoClick()
+		} else {
+			token = config.TokenQueue.Pop()
 		}
+
 		r.Response.WriteJson(g.Map{
 			"token": token,
 		})
