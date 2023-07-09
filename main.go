@@ -47,6 +47,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	// 每小时清理一次
+	_, err = gcron.AddSingleton(ctx, "0 0 * * * *", func(ctx context.Context) {
+		tokenURI := "http://127.0.0.1:" + gconv.String(config.Port) + "/token"
+		payloadURI := "http://127.0.0.1:" + gconv.String(config.Port) + "/payload"
+		g.Log().Print(ctx, "Every hour", tokenURI, payloadURI)
+		g.Client().Get(ctx, tokenURI)
+		g.Client().Get(ctx, payloadURI)
+	}, "clean")
+	if err != nil {
+		panic(err)
+	}
+
 	s.SetPort(config.Port)
 	s.SetServerRoot("resource/public")
 	s.BindHandler("/arkose", func(r *ghttp.Request) {
