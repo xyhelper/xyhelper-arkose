@@ -5,6 +5,7 @@ import (
 
 	"context"
 	"strings"
+	"time"
 	"xyhelper-arkose/autoclick"
 	"xyhelper-arkose/config"
 
@@ -40,6 +41,8 @@ func main() {
 		}
 		config.PayloadQueue.Push(playload)
 		config.TokenQueue.Push(token)
+		// 生成延时
+		time.Sleep(time.Duration(config.INTERVAL(ctx)) * time.Second)
 
 	}, "get")
 	if err != nil {

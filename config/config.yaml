@@ -1,2 +1,6 @@
+# headless chrome 调试地址
 BROWSERURL: "http://127.0.0.1:9222"
+# 生成模式：dev 模式不执行计划任务， 实时生成
 MODE: "dev"
+# 生成间隔（秒）
+# INTERVAL: 10

@@ -18,3 +18,10 @@ func BROWSERURL(ctx g.Ctx) string {
 
 	return BROWSERURL
 }
+
+func INTERVAL(ctx g.Ctx) int {
+	INTERVAL := g.Cfg().MustGetWithEnv(ctx, "INTERVAL").Int()
+	g.Log().Infof(ctx, "INTERVAL: %d", INTERVAL)
+
+	return INTERVAL
+}
