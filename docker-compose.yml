@@ -5,7 +5,7 @@ services:
     restart: always
     command: ["--ignore-certificate-errors"]
     ports:
-      - 9222:9222
+      - 127.0.0.1:9222:9222
   chat.openai.com:
     image: caddy:latest
     restart: always
