@@ -60,7 +60,7 @@ func main() {
 	}
 
 	s.SetPort(config.Port)
-	s.SetServerRoot("resource/public")
+	s.SetServerRoot("resource/public/dist")
 	s.BindHandler("/arkose", func(r *ghttp.Request) {
 		payload, token := autoclick.AutoClick()
 		r.Response.WriteJson(g.Map{
@@ -113,6 +113,34 @@ func main() {
 		}
 
 		r.Response.WriteJson(token)
+	})
+	s.BindHandler("/pushtoken", func(r *ghttp.Request) {
+		token := r.Get("token").String()
+		if token == "" {
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "token is empty",
+			})
+			return
+		}
+		if !strings.Contains(token, "sup=1|rid=") {
+			g.Log().Error(ctx, "token error", token)
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "token error",
+			})
+			return
+		}
+		Token := config.Token{
+			Token:   token,
+			Created: time.Now().Unix(),
+		}
+		config.TokenQueue.Push(Token)
+		g.Log().Info(r.Context(), "pushtoken", token)
+		r.Response.WriteJson(g.Map{
+			"code": 1,
+			"msg":  "success",
+		})
 	})
 	s.Run()
 }

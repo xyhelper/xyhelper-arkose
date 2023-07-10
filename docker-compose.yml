@@ -4,6 +4,7 @@ services:
     image: chromedp/headless-shell:latest
     restart: always
     command: ["--ignore-certificate-errors"]
+    # command: ["--ignore-certificate-errors","--proxy-server=foopy:8080","--proxy-bypass-list='chat.openai.com;'"]
     ports:
       - 127.0.0.1:9222:9222
   chat.openai.com:
@@ -22,4 +23,4 @@ services:
       - PAYLOAD_EXPIRE=10800
       - TOKEN_EXPIRE=1200
       - INTERVAL=0
-      - PAGE_NAME=chat.html # chat.html is the default page name for the chat.openai.com, you can change it to any page arkose.html, etc.
+      - PAGE_NAME=arkose.html # chat.html is the default page name for the chat.openai.com, you can change it to any page arkose.html, etc.
