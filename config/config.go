@@ -12,6 +12,7 @@ var (
 	PayloadQueue  = gqueue.New()
 	TokenQueue    = gqueue.New()
 	Port          = 8199
+	PageName      = "chat.html"
 )
 
 type Payload struct {
@@ -52,4 +53,9 @@ func init() {
 	if tokenExpire != 0 {
 		TokenExpire = tokenExpire
 	}
+	pageName := g.Cfg().MustGetWithEnv(ctx, "PAGE_NAME").String()
+	if pageName != "" {
+		PageName = pageName
+	}
+
 }

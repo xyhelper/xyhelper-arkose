@@ -14,3 +14,7 @@ PAYLOAD_EXPIRE: 10800
 
 # token 有效期（秒）
 TOKEN_EXPIRE: 1200
+
+# page
+
+PAGE_NAME: "arkose.html"

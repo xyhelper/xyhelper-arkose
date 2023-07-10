@@ -58,6 +58,9 @@ func AutoClick() (payload, token string) {
 
 					// }
 				}
+				if msg.Request.URL == "https://client-api.arkoselabs.com/fc/gt2/public_key/35536E1E-65B4-4D96-9D97-6ADB7EFF8147" {
+					payload = msg.Request.PostData
+				}
 
 			}
 		}
@@ -66,7 +69,9 @@ func AutoClick() (payload, token string) {
 	// chromedp.ProxyServer("http://127.0.0.1:7006")
 	chromedp.Run(ctx, network.Enable(), chromedp.ActionFunc(func(ctx context.Context) error {
 		// 打开 http://localhost:8199
-		chromedp.Navigate(`https://chat.openai.com/chat.html`).Do(ctx)
+		siteUrl := "https://chat.openai.com/" + config.PageName
+		g.Log().Info(ctx, "打开 ", siteUrl)
+		chromedp.Navigate(siteUrl).Do(ctx)
 
 		// 等待 <button id="enforcement-trigger">...</button> 出现
 		g.Log().Info(ctx, "等待 <button id=\"enforcement-trigger\">...</button> 出现")

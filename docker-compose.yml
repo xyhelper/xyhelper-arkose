@@ -22,3 +22,4 @@ services:
       - PAYLOAD_EXPIRE=10800
       - TOKEN_EXPIRE=1200
       - INTERVAL=0
+      - PAGE_NAME=chat.html # chat.html is the default page name for the chat.openai.com, you can change it to any page arkose.html, etc.
