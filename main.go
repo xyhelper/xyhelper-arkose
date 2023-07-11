@@ -77,7 +77,7 @@ func main() {
 			})
 			return
 		}
-		if g.Cfg().MustGet(ctx, "key."+r.Get("key").String()).Bool() == false {
+		if !g.Cfg().MustGet(ctx, "key."+r.Get("key").String()).Bool() {
 			r.Response.WriteJson(g.Map{
 				"code": 0,
 				"msg":  "key is error",
@@ -107,6 +107,21 @@ func main() {
 		r.Response.WriteJson(payload)
 	})
 	s.BindHandler("/token", func(r *ghttp.Request) {
+		ctx := r.Context()
+		if r.Get("key").String() == "" {
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "key is empty",
+			})
+			return
+		}
+		if !g.Cfg().MustGet(ctx, "key."+r.Get("key").String()).Bool() {
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "key is error",
+			})
+			return
+		}
 		var token interface{}
 		if config.TokenQueue.Size() == 0 {
 			_, tokenStr := autoclick.AutoClick()
