@@ -69,6 +69,21 @@ func main() {
 		})
 	})
 	s.BindHandler("/payload", func(r *ghttp.Request) {
+		ctx := r.Context()
+		if r.Get("key").String() == "" {
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "key is empty",
+			})
+			return
+		}
+		if g.Cfg().MustGet(ctx, "key."+r.Get("key").String()).Bool() == false {
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "key is error",
+			})
+			return
+		}
 		var payload interface{}
 		if config.PayloadQueue.Size() == 0 {
 			payloadStr, _ := autoclick.AutoClick()

@@ -17,6 +17,8 @@ services:
     image: xyhelper/xyhelper-arkose:latest
     restart: always
     network_mode: "host"
+    volumes:
+      - $PWD/config.prod.yml:/app/config.yaml
     environment:
       - PORT=8199
       - BROWSERURL=http://127.0.0.1:9222

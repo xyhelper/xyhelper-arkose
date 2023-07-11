@@ -18,3 +18,8 @@ TOKEN_EXPIRE: 1200
 # page
 
 PAGE_NAME: "arkose.html"
+
+#key
+
+key:
+  123: true
