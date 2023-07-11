@@ -18,7 +18,7 @@ services:
     restart: always
     network_mode: "host"
     volumes:
-      - $PWD/config.prod.yml:/app/config.yaml
+      - $PWD/config.prod.yaml:/app/config.yaml
     environment:
       - PORT=8199
       - BROWSERURL=http://127.0.0.1:9222
