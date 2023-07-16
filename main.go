@@ -67,7 +67,7 @@ func main() {
 		r.Response.WriteJson(token)
 	})
 	s.BindHandler("/pushtoken", func(r *ghttp.Request) {
-		g.Dump(r.Header)
+		// g.Dump(r.Header)
 		token := r.Get("token").String()
 		if token == "" {
 			r.Response.WriteJson(g.Map{
@@ -113,5 +113,10 @@ func getRealIP(req *ghttp.Request) string {
 		return ip
 	}
 	// 最后获取RemoteAddr
-	return req.RemoteAddr
+	ip := req.RemoteAddr
+	// 处理端口
+	if index := strings.Index(ip, ":"); index != -1 {
+		ip = ip[0:index]
+	}
+	return ip
 }
