@@ -3,11 +3,8 @@ services:
   chat.openai.com:
     image: xyhelper/xyhelper-arkose:latest
     restart: always
-    # network_mode: "host"
     ports:
       - 8199:80
-    # volumes:
-    #   - $PWD/config.prod.yaml:/app/config.yaml
     environment:
       - PORT=80
   chrome:

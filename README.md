@@ -9,6 +9,31 @@ cd xyhelper-arkose
 docker compose up -d
 ```
 
+或者仅复制 `docker-compose.yml` 中的内容
+
+```yaml
+version: '3'
+services:
+  chat.openai.com:
+    image: xyhelper/xyhelper-arkose:latest
+    restart: always
+    ports:
+      - 8199:80
+    environment:
+      - PORT=80
+  chrome:
+    image: kasmweb/chrome:1.10.0
+    ports:
+      - "6901:6901"
+    environment:
+      - VNC_PW=xyhelper
+      - URL=http://chat.openai.com
+    shm_size: 512m
+```
+```bash
+docker compose up -d
+```
+
 ## 2. 使用
 
 ### 2.1 获取token
