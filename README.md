@@ -13,15 +13,16 @@ docker compose up -d
 
 ### 2.1 获取token
 ```bash
-curl http://localhost:8199/token?key=xyhelper
+curl "http://localhost:8199/token"
 ```
 
+### 2.2 获取token池容量
+```bash
+curl "http://localhost:8199/ping"
+```
 
-https://chatarkose.xyhelper.cn/token?key=xxxx
-
-
-https://chatarkose.xyhelper.cn/?delay=10
-
-
-https://chatarkose.xyhelper.cn/ping
+### 2.3 主动挂机
+```bash
+curl "http://localhost:8199/?delay=10"
+```
 
