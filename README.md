@@ -68,3 +68,11 @@ services:
 ```bash
 docker compose up -d
 ```
+
+## 4. 管理chrome
+
+登陆地址：https://localhost:6901
+
+用户名：kasm_user
+
+默认密码：xyhelper  
