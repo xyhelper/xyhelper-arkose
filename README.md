@@ -51,3 +51,20 @@ curl "http://localhost:8199/ping"
 curl "http://localhost:8199/?delay=10"
 ```
 
+## 3. 增加挂机节点
+在节点使用以下 `docker-compose.yml` 启动
+```yaml 
+version: '3'
+services:
+  chrome:
+    image: kasmweb/chrome:1.10.0
+    ports:
+      - "6901:6901"
+    environment:
+      - VNC_PW=xyhelper
+      - URL=https://chatarkose.xyhelper.cn  # 修改为你的挂机节点
+    shm_size: 512m
+```
+```bash
+docker compose up -d
+```
