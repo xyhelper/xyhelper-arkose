@@ -14,5 +14,6 @@ services:
     environment:
       - VNC_PW=xyhelper
       - URL=http://chat.openai.com
+      - APP_ARGS=--ignore-certificate-errors
     shm_size: 512m
 

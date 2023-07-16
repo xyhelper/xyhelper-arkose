@@ -23,3 +23,5 @@ PAGE_NAME: "arkose.html"
 
 key:
   xyhelper: true
+
+PORT: 8080

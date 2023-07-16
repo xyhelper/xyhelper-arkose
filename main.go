@@ -67,6 +67,7 @@ func main() {
 		r.Response.WriteJson(token)
 	})
 	s.BindHandler("/pushtoken", func(r *ghttp.Request) {
+		// g.Dump(r.Header)
 		token := r.Get("token").String()
 		if token == "" {
 			r.Response.WriteJson(g.Map{
@@ -88,11 +89,24 @@ func main() {
 			Created: time.Now().Unix(),
 		}
 		config.TokenQueue.Push(Token)
-		g.Log().Info(r.Context(), "pushtoken", token)
+		g.Log().Info(r.Context(), getRealIP(r), "pushtoken", token)
 		r.Response.WriteJson(g.Map{
 			"code": 1,
 			"msg":  "success",
 		})
 	})
 	s.Run()
+}
+
+func getRealIP(req *ghttp.Request) string {
+	// 优先获取X-Real-IP
+	if ip := req.Header.Get("X-Real-IP"); ip != "" {
+		return ip
+	}
+	// 其次获取X-Forwarded-For
+	if ip := req.Header.Get("X-Forwarded-For"); ip != "" {
+		return ip
+	}
+	// 最后获取RemoteAddr
+	return req.RemoteAddr
 }
