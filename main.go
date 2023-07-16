@@ -67,7 +67,7 @@ func main() {
 		r.Response.WriteJson(token)
 	})
 	s.BindHandler("/pushtoken", func(r *ghttp.Request) {
-		// g.Dump(r.Header)
+		g.Dump(r.Header)
 		token := r.Get("token").String()
 		if token == "" {
 			r.Response.WriteJson(g.Map{
@@ -99,6 +99,11 @@ func main() {
 }
 
 func getRealIP(req *ghttp.Request) string {
+	// 优先获取Cf-Connecting-Ip
+	if ip := req.Header.Get("Cf-Connecting-Ip"); ip != "" {
+		return ip
+	}
+
 	// 优先获取X-Real-IP
 	if ip := req.Header.Get("X-Real-IP"); ip != "" {
 		return ip
