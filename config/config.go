@@ -7,12 +7,10 @@ import (
 )
 
 var (
-	PayloadExpire = 60 * 60 * 3
-	TokenExpire   = 60 * 20
-	PayloadQueue  = gqueue.New()
-	TokenQueue    = gqueue.New()
-	Port          = 8199
-	PageName      = "chat.html"
+	TokenExpire = 60 * 20
+	TokenQueue  = gqueue.New()
+	Port        = 8199
+	PageName    = "chat.html"
 )
 
 type Payload struct {
@@ -45,10 +43,7 @@ func init() {
 	if port != 0 {
 		Port = port
 	}
-	payLoadExpire := g.Cfg().MustGetWithEnv(ctx, "PAYLOAD_EXPIRE").Int()
-	if payLoadExpire != 0 {
-		PayloadExpire = payLoadExpire
-	}
+
 	tokenExpire := g.Cfg().MustGetWithEnv(ctx, "TOKEN_EXPIRE").Int()
 	if tokenExpire != 0 {
 		TokenExpire = tokenExpire

@@ -1,28 +1,21 @@
 version: '3'
 services:
-  headless-shell:
-    image: chromedp/headless-shell:latest
-    restart: always
-    command: ["--ignore-certificate-errors"]
-    # command: ["--ignore-certificate-errors","--proxy-server=foopy:8080","--proxy-bypass-list='chat.openai.com;'"]
-    ports:
-      - 127.0.0.1:9222:9222
   chat.openai.com:
-    image: caddy:latest
-    restart: always
-    volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
-      - $PWD/site:/srv
-  xyhelper-arkose:
     image: xyhelper/xyhelper-arkose:latest
     restart: always
-    network_mode: "host"
+    # network_mode: "host"
+    ports:
+      - 8199:80
     volumes:
       - $PWD/config.prod.yaml:/app/config.yaml
     environment:
-      - PORT=8199
-      - BROWSERURL=http://127.0.0.1:9222
-      - PAYLOAD_EXPIRE=10800
-      - TOKEN_EXPIRE=1200
-      - INTERVAL=0
-      - PAGE_NAME=arkose.html # chat.html is the default page name for the chat.openai.com, you can change it to any page arkose.html, etc.
+      - PORT=80
+  chrome:
+    image: kasmweb/chrome:1.10.0
+    ports:
+      - "6901:6901"
+    environment:
+      - VNC_PW=xyhelper
+      - URL=http://chat.openai.com
+    shm_size: 512m
+
