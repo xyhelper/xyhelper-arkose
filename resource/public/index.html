@@ -27,7 +27,7 @@
                 console.log("token:  ", e.token)
                 instance.token = e.token;
                 if(e.token && String(e.token).includes("sup=1|rid=")){
-                    fetch('/pushtoken', {
+                    fetch('./pushtoken', {
                         method: 'POST',
                         headers: {
                             'Referer':'https://arkosetoken.xiu.ee',
