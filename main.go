@@ -60,10 +60,17 @@ func main() {
 					break
 				} else {
 					g.Log().Info(ctx, "token is expired,will pop one ", config.TokenQueue.Size(), tokenStuct.Created, config.TokenExpire)
+					token = nil
 				}
 			}
 		}
-
+		if token == nil {
+			r.Response.WriteJson(g.Map{
+				"code": 0,
+				"msg":  "token is empty",
+			})
+			return
+		}
 		r.Response.WriteJson(token)
 	})
 	s.BindHandler("/pushtoken", func(r *ghttp.Request) {
