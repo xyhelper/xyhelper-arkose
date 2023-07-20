@@ -11,6 +11,7 @@ var (
 	TokenQueue  = gqueue.New()
 	Port        = 8199
 	PageName    = "chat.html"
+	Proxy       = ""
 )
 
 type Payload struct {
@@ -51,6 +52,10 @@ func init() {
 	pageName := g.Cfg().MustGetWithEnv(ctx, "PAGE_NAME").String()
 	if pageName != "" {
 		PageName = pageName
+	}
+	proxy := g.Cfg().MustGetWithEnv(ctx, "PROXY").String()
+	if proxy != "" {
+		Proxy = proxy
 	}
 
 }

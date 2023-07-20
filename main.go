@@ -8,6 +8,7 @@ import (
 	"time"
 	"xyhelper-arkose/config"
 
+	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcron"
@@ -45,11 +46,21 @@ func main() {
 
 		var token interface{}
 		if config.TokenQueue.Size() == 0 {
-			r.Response.WriteJson(g.Map{
-				"code": 0,
-				"msg":  "token is empty",
-			})
-			return
+			// bypass https://ai.fakeopen.com/api/arkose/token
+			result := g.Client().Proxy(config.Proxy).GetVar(ctx, "https://ai.fakeopen.com/api/arkose/token")
+			token = gjson.New(result).Get("token").String()
+			if token == "" {
+				r.Response.WriteJson(g.Map{
+					"code": 0,
+					"msg":  "token is empty",
+				})
+				return
+			} else {
+				config.TokenQueue.Push(g.Map{
+					"token":   token,
+					"created": time.Now().Unix(),
+				})
+			}
 
 		} else {
 			for config.TokenQueue.Size() > 0 {

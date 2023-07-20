@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <!--
+    Include the Arkose Labs API in the <head> of your page. In the example below, remember to
+    replace the <YOUR PUBLIC KEY> with the public key supplied to you by Arkose Labs, and 
+    replace <YOUR CALLBACK> with a name that refers to a global function.
+    e.g. <script src="//client-api.arkoselabs.com/v2/11111111-1111-1111-1111-111111111111/api.js" data-callback="setupDetect" async defer></script>
+  -->
+    <script
+      src="//openai-api.arkoselabs.com/v2/0655BC92-82E1-43D9-B32E-9DF9B01AF50C/api.js"
+      data-callback="setupDetect"
+      async
+      defer
+    ></script>
+    <link rel="shortcut icon" href="#" />
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!--
+  The trigger element can exist anywhere in your page and can be added to the DOM at any time.
+-->
+    <button id="detect-trigger">trigger element</button>
+    <div id="token"></div>
+    <!--
+  To configure the detection, place a script tag just before the closing <body> tag and define the
+  callback as a global function.
+-->
+    <script>
+      /*
+    This global function will be invoked when the API is ready. Ensure the name is the same name
+    that is defined on the attribute `data-callback` in the script tag that loads the api for your
+    public key.
+  */
+      function setupDetect(myDetect) {
+        myDetect.setConfig({
+          selector: "#detect-trigger",
+          onCompleted: function (response) {
+            console.log(response.token);
+            var token = response.token;
+            var element = document.getElementById("token");
+            element.innerHTML = response.token;
+            // 发送token到后端 /pushtoken
+            fetch("/pushtoken", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token: token }),
+            }).then((res) => {
+              console.log(res);
+            });
+
+      
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
