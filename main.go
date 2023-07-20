@@ -56,10 +56,13 @@ func main() {
 				})
 				return
 			} else {
-				config.TokenQueue.Push(g.Map{
+
+				r.Response.WriteJson(g.Map{
 					"token":   token,
 					"created": time.Now().Unix(),
 				})
+				g.Log().Info(ctx, "get token from ai.fakeopen.com", token)
+				return
 			}
 
 		} else {
