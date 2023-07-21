@@ -1,17 +1,15 @@
 # xyhelper-arkose
 
-[ENGLISH](README_EN.md)
+Automatically obtain Arkose tokens for automated testing.
 
-自动获取arkose的token，用于自动化测试
-
-## 1. 安装
+## 1. Installation
 ```bash
 git clone https://github.com/xyhelper/xyhelper-arkose.git
 cd xyhelper-arkose
 docker compose up -d
 ```
 
-或者仅复制 `docker-compose.yml` 中的内容
+Alternatively, copy only the contents of `docker-compose.yml`
 
 ```yaml
 version: '3'
@@ -36,25 +34,25 @@ services:
 docker compose up -d
 ```
 
-## 2. 使用
+## 2. Usage
 
-### 2.1 获取token
+### 2.1 Get Token
 ```bash
 curl "http://localhost:8199/token"
 ```
 
-### 2.2 获取token池容量
+### 2.2 Get Token Pool Capacity
 ```bash
 curl "http://localhost:8199/ping"
 ```
 
-### 2.3 主动挂机
+### 2.3 Hang Up Actively
 ```bash
 curl "http://localhost:8199/?delay=10"
 ```
 
-## 3. 增加挂机节点
-在节点使用以下 `docker-compose.yml` 启动
+## 3. Adding Hanging Nodes
+Start the node with the following `docker-compose.yml`
 ```yaml 
 version: '3'
 services:
@@ -64,17 +62,17 @@ services:
       - "6901:6901"
     environment:
       - VNC_PW=xyhelper
-      - URL=https://chatarkose.xyhelper.cn  # 修改为你的挂机节点
+      - URL=https://chatarkose.xyhelper.cn  # Change this to your hanging node
     shm_size: 512m
 ```
 ```bash
 docker compose up -d
 ```
 
-## 4. 管理chrome
+## 4. Managing Chrome
 
-登陆地址：https://localhost:6901
+Login URL: https://localhost:6901
 
-用户名：kasm_user
+Username: kasm_user
 
-默认密码：xyhelper  
+Default Password: xyhelper
