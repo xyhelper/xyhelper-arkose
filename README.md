@@ -4,6 +4,9 @@
 
 自动获取arkose的token，用于自动化测试
 
+## 通知
+不再提供P项目BYPASS功能,没有原因,请不要问为什么
+
 ## 1. 安装
 ```bash
 git clone https://github.com/xyhelper/xyhelper-arkose.git
