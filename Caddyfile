@@ -29,7 +29,7 @@ chat.openai.com:443 {
         root * /srv
 
         # Enable the static file server.
-        file_server
+        reverse_proxy xyhelper-arkose
 
         tls internal
 }

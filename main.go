@@ -28,6 +28,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	s.EnableHTTPS("./resource/certs/server.crt", "./resource/certs/server.key")
+	s.SetHTTPSPort(443)
 
 	s.SetPort(config.Port)
 	s.SetServerRoot("resource/public")
@@ -102,6 +104,21 @@ func main() {
 			r.Response.WriteJson(g.Map{
 				"code": 0,
 				"msg":  "token error",
+			})
+			return
+		}
+		forwordURL := g.Cfg().MustGetWithEnv(ctx, "FORWORD_URL").String()
+		g.Log().Info(ctx, "forwordURL", forwordURL)
+
+		if forwordURL != "" {
+			result := g.Client().Proxy(config.Proxy).PostVar(ctx, forwordURL, g.Map{
+				"token": token,
+			})
+			g.Log().Info(ctx, "forwordURL", forwordURL, result)
+			r.Response.WriteJson(g.Map{
+				"code":       1,
+				"msg":        "success",
+				"forwordURL": forwordURL,
 			})
 			return
 		}

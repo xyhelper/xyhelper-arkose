@@ -1,19 +1,25 @@
 version: '3'
 services:
   chat.openai.com:
+    image: caddy
+    restart: always
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+  xyhelper-arkose:
     image: xyhelper/xyhelper-arkose:latest
     restart: always
     ports:
       - 8199:80
     environment:
       - PORT=80
+      # - FORWORD_URL=https://chatarkose.xyhelper.cn
   chrome:
     image: kasmweb/chrome:1.10.0
     ports:
       - "6901:6901"
     environment:
       - VNC_PW=xyhelper
-      - URL=http://chat.openai.com
+      - URL=https://chat.openai.com
       - APP_ARGS=--ignore-certificate-errors
     shm_size: 512m
 
