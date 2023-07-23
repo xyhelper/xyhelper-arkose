@@ -8,7 +8,6 @@ import (
 	"time"
 	"xyhelper-arkose/config"
 
-	"github.com/gogf/gf/v2/encoding/gjson"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcron"
@@ -49,39 +48,19 @@ func main() {
 		ctx := r.Context()
 
 		var token interface{}
-		if config.TokenQueue.Size() == 0 {
-			// bypass https://ai.fakeopen.com/api/arkose/token
-			result := g.Client().Proxy(config.Proxy).GetVar(ctx, "https://ai.fakeopen.com/api/arkose/token")
-			token = gjson.New(result).Get("token").String()
-			if token == "" {
-				r.Response.WriteJson(g.Map{
-					"code": 0,
-					"msg":  "token is empty",
-				})
-				return
+
+		for config.TokenQueue.Size() > 0 {
+			token = config.TokenQueue.Pop()
+			var tokenStuct config.Token
+			gconv.Struct(token, &tokenStuct)
+			if time.Now().Unix()-tokenStuct.Created < int64(config.TokenExpire) {
+				break
 			} else {
-
-				r.Response.WriteJson(g.Map{
-					"token":   token,
-					"created": time.Now().Unix(),
-				})
-				g.Log().Info(ctx, "get token from ai.fakeopen.com", token)
-				return
-			}
-
-		} else {
-			for config.TokenQueue.Size() > 0 {
-				token = config.TokenQueue.Pop()
-				var tokenStuct config.Token
-				gconv.Struct(token, &tokenStuct)
-				if time.Now().Unix()-tokenStuct.Created < int64(config.TokenExpire) {
-					break
-				} else {
-					g.Log().Info(ctx, "token is expired,will pop one ", config.TokenQueue.Size(), tokenStuct.Created, config.TokenExpire)
-					token = nil
-				}
+				g.Log().Info(ctx, "token is expired,will pop one ", config.TokenQueue.Size(), tokenStuct.Created, config.TokenExpire)
+				token = nil
 			}
 		}
+
 		if token == nil {
 			r.Response.WriteJson(g.Map{
 				"code": 0,
