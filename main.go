@@ -20,13 +20,15 @@ func main() {
 	ctx := gctx.New()
 	s := g.Server()
 	// 每小时清理一次
-	_, err := gcron.AddSingleton(ctx, "0 0 * * * *", func(ctx context.Context) {
-		tokenURI := "http://127.0.0.1:" + gconv.String(config.Port) + "/token"
-		g.Log().Print(ctx, "Every hour", tokenURI)
-		g.Client().Get(ctx, tokenURI)
-	}, "clean")
-	if err != nil {
-		panic(err)
+	if g.Cfg().MustGetWithEnv(ctx, "FORWORD_URL").String() == "" {
+		_, err := gcron.AddSingleton(ctx, "0 0 * * * *", func(ctx context.Context) {
+			tokenURI := "http://127.0.0.1:" + gconv.String(config.Port) + "/token"
+			g.Log().Print(ctx, "Every hour", tokenURI)
+			g.Client().Get(ctx, tokenURI)
+		}, "clean")
+		if err != nil {
+			panic(err)
+		}
 	}
 	s.EnableHTTPS("./resource/certs/server.crt", "./resource/certs/server.key")
 	s.SetHTTPSPort(443)

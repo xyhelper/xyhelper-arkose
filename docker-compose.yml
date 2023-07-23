@@ -12,7 +12,7 @@ services:
       - 8199:80
     environment:
       - PORT=80
-      # - FORWORD_URL=https://chatarkose.xyhelper.cn
+      # - FORWORD_URL=https://chatarkose.xyhelper.cn/pushtoken
   chrome:
     image: kasmweb/chrome:1.10.0
     ports:
