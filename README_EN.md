@@ -1,38 +1,16 @@
 # xyhelper-arkose
 
-Automatically obtain Arkose tokens for automated testing.
+
+Automatically fetches tokens for arkose to enable automated testing.
 
 ## 1. Installation
 ```bash
 git clone https://github.com/xyhelper/xyhelper-arkose.git
 cd xyhelper-arkose
-docker compose up -d
+./deploy.sh
 ```
 
-Alternatively, copy only the contents of `docker-compose.yml`
-
-```yaml
-version: '3'
-services:
-  chat.openai.com:
-    image: xyhelper/xyhelper-arkose:latest
-    restart: always
-    ports:
-      - 8199:80
-    environment:
-      - PORT=80
-  chrome:
-    image: kasmweb/chrome:1.10.0
-    ports:
-      - "6901:6901"
-    environment:
-      - VNC_PW=xyhelper
-      - URL=http://chat.openai.com
-    shm_size: 512m
-```
-```bash
-docker compose up -d
-```
+Do not only copy `docker-compose.yml`, as it relies on configurations from `Caddyfile`.
 
 ## 2. Usage
 
@@ -52,22 +30,14 @@ curl "http://localhost:8199/?delay=10"
 ```
 
 ## 3. Adding Hanging Nodes
-Start the node with the following `docker-compose.yml`
-```yaml 
-version: '3'
-services:
-  chrome:
-    image: kasmweb/chrome:1.10.0
-    ports:
-      - "6901:6901"
-    environment:
-      - VNC_PW=xyhelper
-      - URL=https://chatarkose.xyhelper.cn  # Change this to your hanging node
-    shm_size: 512m
-```
 ```bash
-docker compose up -d
+git clone https://github.com/xyhelper/xyhelper-arkose.git
+cd xyhelper-arkose
 ```
+
+Modify `docker-compose.yml` and remove the '#' from the line: `- FORWORD_URL=https://chatarkose.xyhelper.cn/pushtoken`.
+
+Execute `./deploy.sh`
 
 ## 4. Managing Chrome
 
@@ -76,3 +46,9 @@ Login URL: https://localhost:6901
 Username: kasm_user
 
 Default Password: xyhelper
+
+## 5. Public Nodes
+
+Get Token URL: https://chatarkose.xyhelper.cn/token
+
+Check Token Pool Capacity: https://chatarkose.xyhelper.cn/ping

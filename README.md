@@ -8,33 +8,10 @@
 ```bash
 git clone https://github.com/xyhelper/xyhelper-arkose.git
 cd xyhelper-arkose
-docker compose up -d
+./deploy.sh
 ```
 
-或者仅复制 `docker-compose.yml` 中的内容
-
-```yaml
-version: '3'
-services:
-  chat.openai.com:
-    image: xyhelper/xyhelper-arkose:latest
-    restart: always
-    ports:
-      - 8199:80
-    environment:
-      - PORT=80
-  chrome:
-    image: kasmweb/chrome:1.10.0
-    ports:
-      - "6901:6901"
-    environment:
-      - VNC_PW=xyhelper
-      - URL=http://chat.openai.com
-    shm_size: 512m
-```
-```bash
-docker compose up -d
-```
+不要仅复制`docker-compose.yml`，因为`docker-compose.yml`中用到了`Caddyfile`中的配置
 
 ## 2. 使用
 
@@ -54,22 +31,14 @@ curl "http://localhost:8199/?delay=10"
 ```
 
 ## 3. 增加挂机节点
-在节点使用以下 `docker-compose.yml` 启动
-```yaml 
-version: '3'
-services:
-  chrome:
-    image: kasmweb/chrome:1.10.0
-    ports:
-      - "6901:6901"
-    environment:
-      - VNC_PW=xyhelper
-      - URL=https://chatarkose.xyhelper.cn  # 修改为你的挂机节点
-    shm_size: 512m
-```
 ```bash
-docker compose up -d
+git clone https://github.com/xyhelper/xyhelper-arkose.git
+cd xyhelper-arkose
 ```
+
+修改`docker-compose.yml` 取消   # - FORWORD_URL=https://chatarkose.xyhelper.cn/pushtoken 的注释
+
+执行`./deploy.sh`
 
 ## 4. 管理chrome
 
@@ -78,3 +47,9 @@ docker compose up -d
 用户名：kasm_user
 
 默认密码：xyhelper  
+
+## 5. 公共节点
+
+获取token地址：https://chatarkose.xyhelper.cn/token
+
+查询token池容量：https://chatarkose.xyhelper.cn/ping
