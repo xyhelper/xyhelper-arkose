@@ -114,7 +114,7 @@ func main() {
 			result := g.Client().Proxy(config.Proxy).PostVar(ctx, forwordURL, g.Map{
 				"token": token,
 			})
-			g.Log().Info(ctx, "forwordURL", forwordURL, result)
+			g.Log().Info(ctx, getRealIP(r), "forwordURL", forwordURL, result)
 			r.Response.WriteJson(g.Map{
 				"code":       1,
 				"msg":        "success",
