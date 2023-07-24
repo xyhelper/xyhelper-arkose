@@ -20,17 +20,17 @@ cd xyhelper-arkose
 
 ### 2.1 获取token
 ```bash
-curl "http://localhost:8199/token"
+curl "http://服务器IP:8199/token"
 ```
 
 ### 2.2 获取token池容量
 ```bash
-curl "http://localhost:8199/ping"
+curl "http://服务器IP:8199/ping"
 ```
 
 ### 2.3 主动挂机
 ```bash
-curl "http://localhost:8199/?delay=10"
+curl "http://服务器IP:8199/?delay=10"
 ```
 
 ## 3. 增加挂机节点
@@ -45,7 +45,7 @@ cd xyhelper-arkose
 
 ## 4. 管理chrome
 
-登陆地址：https://localhost:6901
+登陆地址：https://服务器IP:6901
 
 用户名：kasm_user
 
