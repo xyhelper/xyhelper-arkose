@@ -14,7 +14,7 @@ services:
       - PORT=80
       # - FORWORD_URL=https://chatarkose.xyhelper.cn/pushtoken
   chrome:
-    image: kasmweb/chrome:1.10.0
+    image: kasmweb/chromium:1.13.0
     ports:
       - "6901:6901"
     environment:
