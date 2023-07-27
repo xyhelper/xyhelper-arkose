@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!--<button id="atoken" onclick="getToken()">获取</button>-->
+<div>token正在提交中，按F12可以查看日志...</div>
+<script>
+    var instance = null
+
+    var a = document.createElement("script");
+    // a.src = "https://tcr9i.chat.openai.com/v2/35536E1E-65B4-4D96-9D97-6ADB7EFF8147/api.js"
+    a.src = "https://client-api.arkoselabs.com/v2/35536E1E-65B4-4D96-9D97-6ADB7EFF8147/api.js"
+    a.async = true
+    a.defer = true
+    a.setAttribute("data-status", "loading")
+    a.setAttribute("data-callback", "useArkoseSetupEnforcement")
+    window.useArkoseSetupEnforcement = function (e) {
+        // console.log(e)
+        window.ark = e
+        instance = e
+        e.setConfig({
+            onCompleted: function (e) {
+                // console.log("onCompleted")
+                // console.log("=========================================================================================")
+                console.log("token:  ", e.token)
+                instance.token = e.token;
+                if(e.token && String(e.token).includes("sup=1|rid=")){
+                    fetch('/pushtoken', {
+                        method: 'POST',
+                        headers: {
+                            'Referer':'https://arkosetoken.xiu.ee',
+                            'Content-Type': 'application/json',
+                            'key':"123123"
+                        },
+                        body: JSON.stringify({token: e.token,date: getTime()})
+                    }).then((res) => {
+                        console.log(res)
+                        // ark.run()
+                    })
+                }else{
+                    console.log("token无效，抛弃！");
+                    window.location.reload();
+                }
+
+                
+            },
+            onError: function (e) {
+                console.log("onError")
+                console.log(e)
+            },
+            onFailed: function (e) {
+                console.log("onFailed")
+                console.log(e)
+            },
+            onShown: function (e) {
+                console.log("onShown")
+                console.log(e)
+            },
+            siteData: {
+                location: {
+                    "ancestorOrigins": {},
+                    "href": "https://chat.openai.com/?model=gpt-4",
+                    "origin": "https://chat.openai.com",
+                    "protocol": "https:",
+                    "host": "chat.openai.com",
+                    "hostname": "chat.openai.com",
+                    "port": "",
+                    "pathname": "/",
+                    "search": "?model=gpt-4",
+                    "hash": ""
+                }
+            }
+        })
+        // console.log(e.getConfig())
+        instance.run()
+    }
+
+    let c = 1;
+    // function getToken() {
+    //     setInterval(() => {
+    //         console.log("当前第" + c  + "次获取token");
+    //         if(instance== null || instance.token == ""){
+    //             window.location.reload();
+    //         }
+    //         instance.token = "";
+    //         c++;
+    //         instance.run();
+    //     }, 5000);
+    //     // console.log(instance)
+        
+    // }
+    function getToken() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let delayInSeconds = parseInt(urlParams.get("delay"));
+
+    if (isNaN(delayInSeconds)) {
+        delayInSeconds = 5; // 默认延迟为5秒
+    }
+
+    const delayInMilliseconds = delayInSeconds * 1000;
+
+    setTimeout(() => {
+        console.log("当前第" + c + "次获取token" + "  " + getTime() + "  " + delayInSeconds + "秒后再次获取");
+        if (instance == null || instance.token == "") {
+            window.location.reload();
+        }
+        instance.token = "";
+        c++;
+        instance.run();
+
+        getToken(); // 递归调用函数以实现重复执行
+    }, delayInMilliseconds);
+}
+
+    
+    (()=>getToken())();
+
+    function padNumber(num) {
+        return num < 10 ? '0' + num : num;
+    }
+
+    function getTime(){
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = padNumber(date.getMonth() + 1); // Month is 0-based
+        let day = padNumber(date.getDate());
+        let hours = padNumber(date.getHours());
+        let minutes = padNumber(date.getMinutes());
+        let seconds = padNumber(date.getSeconds());
+        let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        console.log(formattedDate); // Outputs something like "2023-07-09 17:30:15"
+        return formattedDate;
+    }
+
+    document.body.appendChild(a)
+</script>
+</body>
+</html>
