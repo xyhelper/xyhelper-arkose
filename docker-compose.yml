@@ -1,0 +1,6 @@
+version: "3"
+services:
+  broswer:
+    image: xyhelper/xyhelper-arkose:latest
+    ports:
+      - "8199:3000"
