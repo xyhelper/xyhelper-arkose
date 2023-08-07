@@ -21,14 +21,15 @@ import (
 var (
 	challengeUrl = "https://client-api.arkoselabs.com/fc/gt2/public_key/35536E1E-65B4-4D96-9D97-6ADB7EFF8147"
 	headers      = map[string]string{
-		"Origin":          "https://client-api.arkoselabs.com",
-		"Referer":         "https://client-api.arkoselabs.com/v2/1.5.4/enforcement.cd12da708fe6cbe6e068918c38de2ad9.html",
-		"User-Agent":      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0",
-		"Content-Type":    "application/x-www-form-urlencoded; charset=UTF-8",
-		"Accept":          "*/*",
-		"Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
-		"Sec-Fetch-Mode":  "cors",
-		"Sec-Fetch-Site":  "same-origin",
+		"Origin":           "https://client-api.arkoselabs.com",
+		"Referer":          "https://client-api.arkoselabs.com/v2/1.5.4/enforcement.cd12da708fe6cbe6e068918c38de2ad9.html",
+		"User-Agent":       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0",
+		"Content-Type":     "application/x-www-form-urlencoded; charset=UTF-8",
+		"Accept":           "*/*",
+		"Accept-Language":  "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+		"Sec-Fetch-Mode":   "cors",
+		"Sec-Fetch-Site":   "same-origin",
+		"sec-ch-ua-mobile": "?0",
 
 		"Connection":     "keep-alive",
 		"Sec-Fetch-Dest": "empty",
