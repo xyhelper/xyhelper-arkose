@@ -1,5 +1,8 @@
 # xyhelper-arkose
 
+---
+# 因OPENAI修改了生成的token的有效期，token池模式已无存在意义，本项目终结.
+---
 [ENGLISH](README_EN.md)
 
 自动获取 arkose 的 token，用于自动化测试
